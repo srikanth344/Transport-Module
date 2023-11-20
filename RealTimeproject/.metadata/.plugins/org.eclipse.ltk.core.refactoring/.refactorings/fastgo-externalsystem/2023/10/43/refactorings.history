@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy package &apos;config&apos; to &apos;retrieveconsolidatedroutesandschedule-travelontip-sapi/src/main/resources&apos;&#x0D;&#x0A;- Original project: &apos;fastgo-externalsystem&apos;&#x0D;&#x0A;- Destination element: &apos;retrieveconsolidatedroutesandschedule-travelontip-sapi/src/main/resources&apos;&#x0D;&#x0A;- Original element: &apos;fastgo-externalsystem/src/main/resources/config&apos;" description="Copy package" destination="=retrieveconsolidatedroutesandschedule-travelontip-sapi/src\/main\/resources" element1="/src\/main\/resources&lt;config" flags="589830" fragments="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyPackages" stamp="1698135766339" version="1.0"/>
+</session>

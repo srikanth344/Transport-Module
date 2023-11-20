@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+    <http:listener-config name="retrieve-consolidated-routesandschedules-papi-httpListenerConfig">
+        <http:listener-connection host="${http.listener.host}" port="${http.listener.port}" />
+    </http:listener-config>
+    <apikit:config name="retrieve-consolidated-routesandschedules-papi-config" api="retrieve-consolidated-routesandschedules-papi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<configuration-properties doc:name="Configuration properties" doc:id="a45bf714-51ec-4442-97f4-c272ecfd5ea3" file="config/${MULE-ENV}.yaml" />
+	<http:request-config name="HTTP_Request_configuration_TravelOnTip" doc:name="HTTP Request configuration" doc:id="1f85abec-e8f0-4258-825e-7dda2c170730" >
+		<http:request-connection host="${http.requestor.travelOnTip.host}" port="${http.requestor.travelOnTip.port}" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_configuration_FastGo_SAPI" doc:name="HTTP Request configuration" doc:id="e66be7af-ee38-4c3d-a0f5-10ce888a3f32" >
+		<http:request-connection host="${http.requestor.fastGo.host}" port="${http.requestor.fastGo.port}" />
+	</http:request-config>
+	<configuration doc:name="Configuration" doc:id="a63313ce-c766-4aad-bac5-f781b6c8dba3" defaultErrorHandler-ref="globalError_Handler" />
+	<os:object-store name="Object_store" doc:name="Object store" doc:id="d21c98d0-2d46-4c93-902f-23f509d1000c" maxEntries="1000" entryTtl="15" entryTtlUnit="MINUTES" expirationInterval="10" />
+	<ee:object-store-caching-strategy name="Caching_Strategy" doc:name="Caching Strategy" doc:id="708fa88f-b79d-47ff-9adc-f693280ab22c" objectStore="Object_store" keyGenerationExpression='#[vars.transportCompany ++ vars.transportType ++ vars.resource]'/>
+</mule>

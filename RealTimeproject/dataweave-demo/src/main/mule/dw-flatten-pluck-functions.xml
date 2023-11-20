@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="dw-flatten-functionFlow" doc:id="3403a7a9-a640-4b80-b399-906e4aafdccb" >
+		<ee:transform doc:name="Faltten-Func" doc:id="716f09f2-7a97-48b7-bbc8-be78b21d244c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var empList = [{
+	"empID": 100,
+	"empName": "Chinna",
+	"empStatus": "A"
+},
+{
+	"empID": 101,
+	"empName": "Mark",
+	"empStatus": "I"
+},
+[
+	{
+	"empID":102,
+	"empName":"Stephen",
+	"empStatus": "I"
+},
+{
+	"empID": 103,
+	"empName": "John",
+	"empStatus": "A"	
+}
+]
+]
+---
+{
+	"employees":flatten(empList)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dw-pluck-functionFlow" doc:id="45a9e98a-8d8f-4f35-996f-097fa975bbdd" >
+		<ee:transform doc:name="Transform Message" doc:id="5b16256d-8eb6-417b-b790-bd3e79d1bc6b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var empList = {
+	"empID": 100,
+	"empName": "Chinna",
+	"empStatus": "A"
+}
+---
+{
+	"keysOfEmployees": empList pluck $,
+	"valuesOfemployees":empList pluck $$
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

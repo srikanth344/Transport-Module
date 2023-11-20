@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="dw-map-mapObject-fliter-fliterObjectFlow" doc:id="3341ed68-2aa4-4c91-86ce-afd029f36e6e" >
+		<ee:transform doc:name="Transform Message" doc:id="f69a5d11-d1f9-4681-8509-105e8c91a077" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var empList = [{
+	"empID":100,
+	"empName":"Chinna",
+	"empStatus": "A"
+},
+{
+	"empID": 101,
+	"empName": "Mark",
+	"empStatus": "I"
+},
+{
+	"empID": 102,
+	"empName": "John",
+	"empStatus": "I"
+},
+{
+	"empID": 103,
+	"empName": "Stephen",
+	"empStatus": "A"
+}
+]
+---
+empList map(emp,indexofemp)->{
+	employeeId:emp.empID,
+	employeename:emp.empName,
+	employeeStatus:emp.empStatus
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dw-mapObject" doc:id="70f60a49-11f0-433b-8643-cce40c1a2835" >
+		<ee:transform doc:name="Transform Message" doc:id="a63fe3ab-1dc5-4c63-8154-34e71cd2dfb0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var empList = [{
+	"empID":100,
+	"empName":"Chinna",
+	"empStatus": "A"
+},
+{
+	"empID": 101,
+	"empName": "Mark",
+	"empStatus": "I"
+},
+{
+	"empID": 102,
+	"empName": "John",
+	"empStatus": "I"
+},
+{
+	"empID": 103,
+	"empName": "Stephen",
+	"empStatus": "A"
+}
+]
+---
+empList[0] mapObject (empValue, empKey, indexOfemp) -> {
+	(empKey): empValue,
+	employeeKey: empKey,
+	empIndex: indexOfemp
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dw-map-mapObject" doc:id="8b412038-4c5c-4da6-bf79-fc054a7e7c60" >
+		<ee:transform doc:name="Transform Message" doc:id="573b5111-69aa-4531-a78d-d035edbabff6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var empList =[{
+	"empID": 100,
+	"empName": "Chinna",
+	"empStatus": "A"
+},
+{
+	"empID": 101,
+	"empName": "Mark",
+	"empStatus": "I"	
+},
+{
+	"empID": 102,
+	"empName": "John",
+	"empStatus": "I"
+},
+{
+	"empID": 103,
+	"empName": "Chinna",
+	"empStatus": "A"
+}]
+---
+empList map(emp, indexOfemp) -> {
+	(emp mapObject if(($) as String == "Chinna"){
+		($$): $,
+		"empLocation":"India"
+	} else{
+	 ($$): $
+	})
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

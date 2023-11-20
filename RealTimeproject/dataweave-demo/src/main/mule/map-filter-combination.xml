@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="map-filter-combinationFlow" doc:id="e05381d1-5d02-466c-b706-77a04563b440" >
+		<ee:transform doc:name="Transform Message" doc:id="656754a3-28be-4bc4-b494-4e0ff3eaff48" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var empList =[{
+	"empID": 100,
+	"empName": "Chinna",
+	"empStatus": "A"
+},
+{
+	"empID": 101,
+	"empName": "Mark",
+	"empStatus": "I"	
+},
+{
+	"empID": 102,
+	"empName": "John",
+	"empStatus": "I"
+},
+{
+	"empID": 103,
+	"empName": "Chinna",
+	"empStatus": "A"
+}]
+--- 
+{
+firstmodel:empList filter($.empStatus == "A") map (emp, indexOfemp) -> {
+	"employeeId": emp.empID,
+	"employeeName": emp.empName,
+	"employeeStatus":emp.empStatus
+},
+secondmodel: empList filter($.empStatus == "A") map {
+	"employeeId": $.empID,
+	"employeeName": $.empName,
+	"employeeStatus":$.empStatus
+},
+thirdmodel: empList map ((emp,indexOfemp) -> {
+	employeeID: emp.empID,
+	employeeName: emp.empName,
+	employeeStatus: emp.empStatus
+	}) filter($.employeeStatus == "A" and $.employeeID == 100)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="mapObject-filterobject-combinationFlow1" doc:id="ab64ae12-27ea-4993-b17c-422f0484de04" >
+		<ee:transform doc:name="Transform Message" doc:id="8744f050-3e91-4526-b178-b3b9c860d55d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+var empList =[{
+	"empID": 100,
+	"empName": "Chinna",
+	"empStatus": "A"
+},
+{
+	"empID": 101,
+	"empName": "Mark",
+	"empStatus": "I"	
+},
+{
+	"empID": 102,
+	"empName": "John",
+	"empStatus": "I"
+},
+{
+	"empID": 103,
+	"empName": "Chinna",
+	"empStatus": "A"
+}]
+output application/json
+---
+empList[0] filterObject(($) == 100) mapObject(empValue, empkey, indexOfemp)-> {
+	(empkey): empValue
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

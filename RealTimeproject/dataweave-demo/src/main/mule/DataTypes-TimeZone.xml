@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="DataTypes-TimeZoneFlow" doc:id="7c09d971-ea55-43ab-bf10-21f2673a6087" >
+		<ee:transform doc:name="Transform Message" doc:id="37a318ae-f1b5-4510-8dd9-5b5156740c71" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"toDayDate": now() as Date {format:"yyyy-MM-dd"},
+	"toDayTime": now() as Time {format: "HH:mm:ss.SSS"},
+	"currentHour": now() as Time {format: "HH"},
+	"currentDateTime": now() as LocalDateTime {format: "yyyy-MM-dd HH:mm:ss.SSS"},
+	"UTCTime": now() >> "UTC",
+	"ISTTime": now() >> "IST",
+	"ESTTime": now() >> "EST",
+	"UTC": ((now() >> "UTC") >> "IST") as LocalDateTime {format:"yyyy-MM-dd HH:mm:ss"},
+	"UTC-10": now() >> "UTC-10",
+	"TypeCoercision": "2020-09-07T12:08:12Z" as LocalDateTime{format:"yyyy-MM-dd'T'HH:mm:ss'Z'"} as LocalDateTime{format:"yyyy-MM-dd HH:mm:ss"} default null
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="Flow-Control-statements-EntryObject" doc:id="ab42ed26-8312-4655-b8dc-be7017e4f6f2" >
+		<ee:transform doc:name="Transform Message" doc:id="09fce9f1-e2bc-43c2-b010-8de4c651842f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var country = "India"
+var city = "Newyork"
+---
+if(country == "USA"){
+	currency: "USD",
+	city: city
+} else if(country == "India"){
+	currency: "IRS",
+	city: "Delhi"
+} else {
+	currency : "None",
+	city : "None"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="Flow-Control-statements_single-Field_predefined-Fun" doc:id="a4bfd51d-1079-4937-9bef-da5317dbae17" >
+		<ee:transform doc:name="Transform Message" doc:id="c5fdf2b3-93cb-427c-9f33-17494901f32d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var country = "India"
+var city ="Chicago"
+---
+{
+	"country": country,
+	"currency": if(country == "USA") "USD" else if(country == "India") "IRS" else "None",
+	"city": if(country == "USA") city else if(country == "India") "Delhi" else "None",
+	"now": now(),
+	"isLeapYear1": isLeapYear(|2016-10-01T23:57:59|),
+	"isLeapYear2": isLeapYear(|2017-10-01T23:57:59|),
+	"days": daysBetween(|2016-10-01T23:57:59-03:00|, |2017-10-01T23:57:59-03:00|),
+	"epocTime": now() as Number,
+	"nanoseconds": now().nanoseconds,
+	"milliseconds": now().milliseconds,
+	"seconds": now().seconds,
+	"minutes": now().minutes,
+	"hour": now().hour,
+	"day": now().day,
+	"month": now().month,
+	"Year": now().year,
+	"quarter": now().quarter,
+	"dayofWeek": now().dayOfWeek,
+	"dayofYear": now().dayOfYear,
+	"offsetSeconds":now().offsetSeconds
+	}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

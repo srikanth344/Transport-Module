@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="sizeOf-array_object_fieldFlow" doc:id="770b4090-8e46-4ecd-a746-3912b6f4ec3b" >
+		<ee:transform doc:name="Transform Message" doc:id="3000ff67-41cb-40bc-bed0-c26418ee051c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var empName = "chinna"
+var empSkills = ["skill1", "skill2"]
+var employee = {
+	"empID" : "76868",
+	"empName": "Chinna",
+	"empStatus": "A"
+}
+var employeeList = [{
+	"empID": "76868",
+	"empName": "Chinna",
+	"empStatus": "A"
+},
+{
+	"empID": "76867",
+	"empName": "John",
+	"empStatus": "A"
+},
+{
+	"empID": "76866",
+	"empName": "Mark",
+	"empStatus": "A",
+},
+{
+	"empID": "76865",
+	"empName": "Stephen",
+	"empStatus": "A"
+}
+]
+---
+{
+	"sizeOf-FieldLevel": sizeOf(empName),
+	"sizeOf-ArrayLevel": sizeOf(empSkills),
+	"sizeOf-objectLevel": sizeOf(employee),
+	"sizeOf-ArrayofObjectLevel": sizeOf(employeeList),
+	"namesOf-employee": namesOf(employee),
+	"entriesOf-employee": entriesOf(employee),
+	"keysOf-employee": keysOf(employee),
+	"valuesOf-Employee": valuesOf(employee)
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

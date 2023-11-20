@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="filter-map-example_with_databaseFlow" doc:id="40fe93dd-45f9-42b2-b81a-5828b0c9c808" >
+		<http:listener doc:name="Listener" doc:id="e7bd7ca7-a38a-46b7-8b86-6bb5a6347495" config-ref="HTTP_Listener_config" path="filter"/>
+	</flow>
+</mule>

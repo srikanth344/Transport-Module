@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;dataweave-demo/src/main/mule/dataweave-demo.xml&apos; to &apos;Json-All-Types-Trans.xml&apos;" description="Rename resource &apos;dataweave-demo.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/mule/dataweave-demo.xml" name="Json-All-Types-Trans.xml" stamp="1698920774670" updateReferences="true"/>
+</session>

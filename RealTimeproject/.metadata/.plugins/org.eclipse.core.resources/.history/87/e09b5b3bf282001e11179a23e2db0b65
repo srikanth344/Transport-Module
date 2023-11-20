@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="dw-By-FunctionsFlow" doc:id="f4472c83-90b9-4cbc-ba3d-c5cdcc3b04eb" >
+		<ee:transform doc:name="Transform Message" doc:id="c70616d7-d585-41ec-ab6c-19b36db75079" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var empList =[{
+	"empID": 100,
+	"empName": "Chinna",
+	"empStatus": "A"
+},
+{
+	"empID": 100,
+	"empName": "Chinna",
+	"empStatus": "A"
+},
+{
+	"empID": 101,
+	"empName": "Mark",
+	"empStatus": "I"	
+},
+{
+	"empID": 102,
+	"empName": "John",
+	"empStatus": "I"
+},
+{
+	"empID": 103,
+	"empName": "Chinna",
+	"empStatus": "A"
+}]
+---
+{
+	"distinctByEmployees": empList distinctBy (item,index)-> item,
+	"orderByEmployeesAsc": empList orderBy $.empID,
+	"orderByEmployeeDesc": empList orderBy -$.empID,
+	"groupByEmployeesbyempStatus": empList groupBy $.empStatus,
+	"InActiveEmployees": (empList filter($.empStatus == "I")).empID joinBy ", "
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

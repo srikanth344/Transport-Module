@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="dw-core-datatypes-varsFlow" doc:id="4d462529-77fe-4695-b063-4c1b156dbae6" >
+		<ee:transform doc:name="Transform Message" doc:id="4296f60b-ce8d-4087-92b0-542cf76be920" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var emp = {
+	"empID": 3456,
+	"empName": "Chinna",
+	"empStatus": "A"
+}
+---
+{
+	name: emp.empName as String,
+	salary: 2345 as Number,
+	employeeId: emp.empID,
+	employeeStatus: emp.empStatus
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="Dataweave-Operators" doc:id="eae65679-caca-4a2e-8e3d-2dd76cf893e1" >
+		<ee:transform doc:name="Transform Message" doc:id="5911fbf9-753e-40be-ba82-496249f2c24b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var firstNumber = 20
+var secondNumber = 10
+var firstName = "mule"
+var secondName = "ESB"
+var empNameArray = ["Chinna","Ravi","Mule"]
+var empObject = {
+	"empID": 1080,
+	"empName": "chinna",
+	"empStatus": "A"
+}
+var empList =[{
+	"empID": 19080,
+	"empName": "chinna",
+	"empStatus": "A"
+},
+{
+	"empID":9856,
+	"empName":"Ravi",
+	"empStatus":"A"
+}]
+---
+[{
+	"arithmeticOperators":{
+		"addition": firstNumber + secondNumber,
+		"subtraction": firstNumber - secondNumber,
+		"multiplication": firstNumber * secondNumber,
+		"Division": firstNumber + secondNumber
+	}
+},
+{
+	"comparsionOperators": {
+		"equalTo": firstNumber == secondNumber,
+		"lessThan": firstNumber < secondNumber,
+		"greaterThan": firstNumber > secondNumber,
+		"notEqualTo": firstNumber != secondNumber,
+		"lessThanorEqualTo": firstNumber <= secondNumber,
+		"greaterThanorEqualTo": firstNumber > secondNumber
+	},
+	"++Operator":{
+		"fullName": firstName ++ " " ++ secondName,
+		"empNames": empNameArray ++ ["ESB"],
+		"empPayload": empObject ++ {"empSalary":56789},
+		"empPayloadList": empList ++ [{
+			"empID": 23890,
+			"empName": "Saicharan",
+			"empStatus": "A"
+		}] 
+	},
+	"--Operator": {
+		"empNames": empNameArray -- ["Mule"],
+		"empPayload": empObject -- {empID:1080},
+		"empPayloadList": empList -- [{
+	"empID": 19080,
+	"empName": "chinna",
+	"empStatus": "A"
+	}]
+   }
+
+}]
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dw-core-Type-Corecions" doc:id="0449ef9b-f607-4dd0-bbbe-3ef42843315e" >
+		<ee:transform doc:name="Transform Message" doc:id="d59d639d-4de1-4630-8702-c3fa9a9ab1f8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var employee = {
+	empName: "Michael Silva",
+	empLocation: "Delhi",
+	empExperience: 3,
+	isActive: "true"
+}
+---
+{
+	empName: employee.empName as String default "",
+	empLocation: employee.empLocation as String default "",
+	empExperience: employee.empExperience as Number default "",
+	isActive: employee.isActive as Boolean default ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
